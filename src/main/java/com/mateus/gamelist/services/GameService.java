@@ -3,6 +3,7 @@ package com.mateus.gamelist.services;
 import com.mateus.gamelist.dto.GameDTO;
 import com.mateus.gamelist.dto.GameMinDTO;
 import com.mateus.gamelist.entities.Game;
+import com.mateus.gamelist.projections.GameMinProjection;
 import com.mateus.gamelist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,12 @@ public class GameService {
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll() {
         List<Game> result = gameRepository.findAll();
+        return result.stream().map(GameMinDTO::new).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByList(Long listId) {
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
         return result.stream().map(GameMinDTO::new).toList();
     }
 }
